@@ -31,9 +31,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     notFound();
   }
 
+  // כשאין כותרת לעמוד לא מציגים h1 ריק (הוא יוצר רווח לבן מיותר מעל התוכן) ומצמצמים את הריווח העליון
+  const hasTitle = Boolean(page.pageTitle && page.pageTitle.trim());
+
   return (
-    <div className="w-full text-right p-6" dir="rtl">
-      <h1 className="text-3xl font-bold mb-6 text-right">{page.pageTitle}</h1>
+    <div className={`w-full text-right px-6 pb-6 ${hasTitle ? "pt-6" : "pt-3"}`} dir="rtl">
+      {hasTitle && <h1 className="text-3xl font-bold mb-6 text-right">{page.pageTitle}</h1>}
       <DynamicComponentRenderer
         components={page.components}
         orgId={appData.organizationId || ""}
